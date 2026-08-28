@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initReadingProgress();
   initBackToTop();
   initBlogFilter();
+  initGlobe();
 });
 
 function initNavToggle() {
@@ -165,6 +166,93 @@ function initBackToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
   toggleVisibility();
+}
+
+function initGlobe() {
+  const canvas = document.getElementById('globe');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const size = canvas.width;
+  const center = size / 2;
+  const radius = size * 0.38;
+
+  const POINT_COUNT = 140;
+  const points = [];
+  const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i < POINT_COUNT; i++) {
+    const y = 1 - (i / (POINT_COUNT - 1)) * 2;
+    const r = Math.sqrt(1 - y * y);
+    const theta = goldenAngle * i;
+    points.push({
+      x: Math.cos(theta) * r,
+      y: y,
+      z: Math.sin(theta) * r,
+      highlight: i % 11 === 0,
+    });
+  }
+
+  let dotColor = '#0E7C86';
+  let highlightColor = '#E2A63B';
+  function readColors() {
+    const styles = getComputedStyle(document.documentElement);
+    dotColor = styles.getPropertyValue('--teal').trim() || dotColor;
+    highlightColor = styles.getPropertyValue('--amber').trim() || highlightColor;
+  }
+  readColors();
+
+  const observer = new MutationObserver(readColors);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  function hexToRgba(hex, alpha) {
+    const clean = hex.replace('#', '');
+    const full = clean.length === 3 ? clean.split('').map((c) => c + c).join('') : clean;
+    const bigint = parseInt(full, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
+  function draw(angle) {
+    ctx.clearRect(0, 0, size, size);
+    const cosA = Math.cos(angle);
+    const sinA = Math.sin(angle);
+
+    const projected = points.map((p) => {
+      const x = p.x * cosA + p.z * sinA;
+      const z = -p.x * sinA + p.z * cosA;
+      return { x, y: p.y, z, highlight: p.highlight };
+    });
+
+    projected.sort((a, b) => a.z - b.z);
+
+    projected.forEach((p) => {
+      const perspective = 2.6 / (2.6 - p.z);
+      const px = center + p.x * radius * perspective;
+      const py = center + p.y * radius * perspective;
+      const depthFactor = (p.z + 1) / 2;
+      const dotSize = 1 + depthFactor * 1.8;
+      const opacity = 0.25 + depthFactor * 0.65;
+
+      ctx.beginPath();
+      ctx.arc(px, py, dotSize, 0, Math.PI * 2);
+      ctx.fillStyle = p.highlight ? hexToRgba(highlightColor, opacity) : hexToRgba(dotColor, opacity);
+      ctx.fill();
+    });
+  }
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    draw(0.6);
+    return;
+  }
+
+  let angle = 0;
+  function tick() {
+    angle += 0.006;
+    draw(angle);
+    requestAnimationFrame(tick);
+  }
+  tick();
 }
 
 function initBlogFilter() {

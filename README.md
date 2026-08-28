@@ -49,4 +49,4 @@ From this point, `/admin` only ever accepts a login from a GitHub account that h
 3. Once approved, replace the `<div class="ad-slot">` placeholders inside each post's Markdown body with your actual AdSense ad unit code.
 4. Google generally wants to see 15–20+ substantive, original posts and real traffic before approving — 3 starter posts is a skeleton, not enough on its own.
 
-Before publishing: replace `hello@example.com` in `contact.njk` and `privacy.njk` with your real email, and update the "last updated" date in `privacy.njk`.
+Before publishing: update the "last updated" date in `privacy.njk`.
