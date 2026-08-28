@@ -1,0 +1,15 @@
+---
+layout: base.njk
+nav: posts
+---
+<main class="wrap">
+  <div class="article-head">
+    <span class="tag">{% for p in collections.posts %}{% if p.url == page.url %}v0.{{ loop.index }}{% endif %}{% endfor %}</span>
+    <h1>{{ title }}</h1>
+    <div class="log-meta">{{ category }} · {{ readTime }} · published {{ date | readableDate }}</div>
+  </div>
+
+  <article>
+    {{ content | safe }}
+  </article>
+</main>

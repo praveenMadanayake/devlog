@@ -1,0 +1,40 @@
+---
+layout: base.njk
+nav: home
+title: devlog — notes from a working software engineer
+description: Practical notes on tools, workflows, and problems solved while writing software for a living.
+---
+<main>
+  <section class="hero wrap">
+    <div class="terminal">
+      <div class="terminal-bar"><span></span><span></span><span></span></div>
+      <div class="terminal-line"><span class="prompt">$</span> whoami</div>
+      <div class="terminal-line out">software engineer, writing down what actually works</div>
+      <div class="terminal-line"><span class="prompt">$</span> cat mission.txt</div>
+      <div class="terminal-line out">no fluff. no "10x" claims. just notes from real work<span class="cursor"></span></div>
+    </div>
+    <h1>Field notes from building software, one problem at a time.</h1>
+    <p class="lede">Tool reviews, workflow breakdowns, and the small fixes that took too long to find the first time — written up so you don't have to hunt for them twice.</p>
+  </section>
+
+  <section class="wrap">
+    <div class="eyebrow">latest entries</div>
+    <h2 class="section-title">Changelog</h2>
+    <div class="log">
+      {% set latest = collections.posts | reverse %}
+      {% for post in latest %}
+        {% if loop.index0 < 3 %}
+      <div class="log-entry">
+        <span class="tag">v0.{{ collections.posts.length - loop.index0 }}</span>
+        <div>
+          <h3><a href="{{ post.url }}">{{ post.data.title }}</a></h3>
+          <div class="log-meta">{{ post.data.category }} · {{ post.data.readTime }}</div>
+          <p>{{ post.data.description }}</p>
+        </div>
+      </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    <p style="margin-top:24px;"><a href="/blog.html">→ view all posts</a></p>
+  </section>
+</main>

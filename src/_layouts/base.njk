@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ pageTitle or title }}</title>
+<meta name="description" content="{{ description }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a href="/index.html" class="brand"><span class="prompt">~/</span>devlog</a>
+    <button class="nav-toggle" aria-label="Toggle menu">menu</button>
+    <div class="nav-links">
+      <a href="/index.html"{% if nav == "home" %} class="active"{% endif %}>home</a>
+      <a href="/blog.html"{% if nav == "posts" %} class="active"{% endif %}>posts</a>
+      <a href="/about.html"{% if nav == "about" %} class="active"{% endif %}>about</a>
+      <a href="/contact.html"{% if nav == "contact" %} class="active"{% endif %}>contact</a>
+    </div>
+  </nav>
+</header>
+
+{{ content | safe }}
+
+<footer>
+  <div class="wrap-wide">
+    <span>© 2026 devlog</span>
+    <span><a href="/privacy.html">privacy policy</a> · <a href="/contact.html">contact</a></span>
+  </div>
+</footer>
+
+<script src="/script.js"></script>
+</body>
+</html>

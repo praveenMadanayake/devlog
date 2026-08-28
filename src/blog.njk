@@ -1,0 +1,38 @@
+---
+layout: base.njk
+permalink: "blog.html"
+nav: posts
+title: All posts — devlog
+description: Every entry — tools, workflows, and problems solved while writing software for a living.
+---
+<main>
+  <section class="wrap" style="padding-top:56px;">
+    <div class="eyebrow">every entry</div>
+    <h2 class="section-title">Changelog</h2>
+
+    <div class="post-filters">
+      <input type="text" id="post-search" placeholder="search posts…" aria-label="Search posts">
+      <div class="tag-chips" id="tag-chips">
+        <button type="button" class="chip active" data-tag="all">all</button>
+        {% for cat in collections.categories %}
+        <button type="button" class="chip" data-tag="{{ cat }}">{{ cat }}</button>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="log" id="post-log">
+      {% set all = collections.posts | reverse %}
+      {% for post in all %}
+      <div class="log-entry" data-tags="{{ post.data.category }}">
+        <span class="tag">v0.{{ collections.posts.length - loop.index0 }}</span>
+        <div>
+          <h3><a href="{{ post.url }}">{{ post.data.title }}</a></h3>
+          <div class="log-meta">{{ post.data.category }} · {{ post.data.readTime }}</div>
+          <p>{{ post.data.description }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <p class="no-results" id="no-results" hidden>No posts match your search.</p>
+  </section>
+</main>

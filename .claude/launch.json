@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "devsite",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["eleventy", "--serve", "--port=8123"],
+      "port": 8123
+    }
+  ]
+}
